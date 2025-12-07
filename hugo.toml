@@ -1,0 +1,123 @@
+baseURL = "http://example.org/"
+title = "Pattern Blog"
+theme = "PaperMod"
+languageCode = "en-us"
+
+# Optimization settings for speed
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+# -----------------------------------------------------------
+# CORE PARAMS & PROFILE MODE (Your Landing Page Fix)
+# -----------------------------------------------------------
+[params]
+    env = "production"
+    description = "Engineering, Systems & AI Patterns"
+    author = "Ashtam Pati Tiwari"
+    
+    # defaultTheme: auto, dark, light
+    defaultTheme = "auto"
+    
+    # This brings back your Intro Page
+    [params.profileMode]
+        enabled = true
+        title = "Ashtam Pati Tiwari"
+        subtitle = "Software Engineer | Exploring AI & System Design"
+        imageUrl = "https://github.com/ashtampatitiwari.png" # Auto-pulls your GitHub pic if you have one
+        imageTitle = "Ashtam"
+        imageWidth = 120
+        imageHeight = 120
+        [[params.profileMode.buttons]]
+            name = "My Patterns"
+            url = "posts"
+        [[params.profileMode.buttons]]
+            name = "Github"
+            url = "https://github.com/ashtampatitiwari"
+
+    # Social Icons on Home Page
+    [[params.socialIcons]]
+        name = "github"
+        url = "https://github.com/ashtampatitiwari"
+    [[params.socialIcons]]
+        name = "linkedin"
+        url = "https://linkedin.com/in/your-linkedin"
+
+# -----------------------------------------------------------
+# TECHNICAL FEATURES (The Power User Stuff)
+# -----------------------------------------------------------
+    # Navigation
+    ShowReadingTime = true
+    ShowShareButtons = true
+    ShowPostNavLinks = true
+    ShowBreadCrumbs = true
+    
+    # Code & Tech Features
+    ShowCodeCopyButtons = true    # Adds "Copy" button to code blocks
+    disableSpecial1stPost = true  # Keeps list layout consistent
+    disableScrollToTop = false
+    comments = false
+    hidemeta = false
+    
+    # Search Feature settings (requires search.md)
+    [params.fuseOpts]
+        isCaseSensitive = false
+        shouldSort = true
+        location = 0
+        distance = 1000
+        threshold = 0.4
+        minMatchCharLength = 0
+        keys = ["title", "permalink", "summary", "content"]
+
+# -----------------------------------------------------------
+# MENU STRUCTURE
+# -----------------------------------------------------------
+[menu]
+    [[menu.main]]
+        identifier = "home"
+        name = "Home"
+        url = "/"
+        weight = 10
+    [[menu.main]]
+        identifier = "posts"
+        name = "Posts"
+        url = "/posts"
+        weight = 20
+    [[menu.main]]
+        identifier = "quotes"
+        name = "Quotes"
+        url = "/quotes"
+        weight = 25
+    [[menu.main]]
+        identifier = "tags"
+        name = "Tags"
+        url = "/tags"
+        weight = 30
+    [[menu.main]]
+        identifier = "search"
+        name = "Search"
+        url = "/search"
+        weight = 40
+
+# -----------------------------------------------------------
+# SYNTAX HIGHLIGHTING (Make Code Look like VS Code)
+# -----------------------------------------------------------
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            unsafe = true # Needed for rendering raw HTML/iframes
+    [markup.highlight]
+        style = "dracula"      # Options: monokai, solarized-dark, dracula
+        lineNos = true         # Show line numbers
+        noClasses = false
+        anchorLineNos = true
+        codeFences = true
+        guessSyntax = true
+        tabWidth = 4
+
+# -----------------------------------------------------------
+# SEARCH ENABLEMENT
+# -----------------------------------------------------------
+[outputs]
+    home = ["HTML", "RSS", "JSON"] # JSON is required for Search to work

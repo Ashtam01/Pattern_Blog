@@ -1,0 +1,73 @@
+/* ==========================================
+   Simple, Cute & Theme-Aware Collapsible Box
+   ========================================== */
+
+.collapsible-box {
+  /* --- Base Container Styles --- */
+  background: var(--secondary-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px; /* Slightly softer, classic radius */
+  margin: 1rem 0;
+  /* A very-subtle, classic shadow */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Summary (Clickable Title Bar) --- */
+.collapsible-box summary {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--primary); /* Uses theme color for the title */
+  cursor: pointer;
+  outline: none;
+  list-style: none; /* Hides default arrow */
+}
+.collapsible-box summary::-webkit-details-marker {
+  display: none;
+}
+
+/* "Cute" and "Classic" [+] icon */
+.collapsible-box summary::before {
+  content: '[+]';
+  font-family: monospace; /* Gives a consistent, classic-tech look */
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-right: 0.75rem;
+  /* Animate the color change for a smooth feel */
+  transition: color 0.2s ease;
+}
+
+/* Change icon to [−] when the box is open */
+.collapsible-box[open] > summary::before {
+  content: '[−]';
+  color: var(--text-secondary); /* Dims the icon slightly when open */
+}
+
+/* --- Content Area --- */
+.collapsible-box .content {
+  padding: 1rem 1.2rem;
+  border-top: 1px solid var(--border-color);
+  /* Uses theme's code background for a nice contrast */
+  background: var(--code-bg);
+}
+
+/* Custom Blockquote Styling */
+blockquote {
+    border-left: 4px solid var(--primary); /* Uses your theme's primary color */
+    background: var(--entry); /* Matches your theme's card background */
+    padding: 10px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Make the author name distinct */
+blockquote strong {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--secondary);
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+}

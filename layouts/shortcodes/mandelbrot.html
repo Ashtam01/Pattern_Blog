@@ -1,0 +1,122 @@
+<div class="mandelbrot-wrapper" style="
+    background: var(--entry); 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    padding: 20px; 
+    text-align: center; 
+    margin: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+">
+    <canvas id="mandelbrotCanvas" style="
+        width: 100%; 
+        max-width: 600px; 
+        aspect-ratio: 3/2; 
+        background: #000; 
+        border-radius: 4px;
+        cursor: crosshair;
+    "></canvas>
+
+    <div style="margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <button id="renderBtn" onclick="drawMandelbrot()" style="
+            background: var(--primary); 
+            color: var(--theme); 
+            border: none; 
+            padding: 10px 24px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        ">
+            Render Simulation
+        </button>
+        <span id="statusText" style="font-size: 0.85rem; color: var(--secondary); opacity: 0.8;">
+            Click to generate (Computed locally via JS)
+        </span>
+    </div>
+</div>
+
+<script>
+function drawMandelbrot() {
+    const canvas = document.getElementById('mandelbrotCanvas');
+    const status = document.getElementById('statusText');
+    const btn = document.getElementById('renderBtn');
+
+    // 1. Setup Canvas Resolution
+    // We set the internal resolution to 600x400 for decent performance
+    const width = 600;
+    const height = 400;
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext('2d');
+    
+    // UI Feedback
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
+    status.innerText = "Computing 240,000 pixels...";
+
+    // 2. Use setTimeout to let the UI update before the heavy loop freezes the browser
+    setTimeout(() => {
+        const imgData = ctx.createImageData(width, height);
+        const data = imgData.data;
+        
+        // Mandelbrot Parameters
+        const maxIter = 100;
+        const minX = -2.5, maxX = 1.0;
+        const minY = -1.2, maxY = 1.2;
+        
+        // 3. The Mathematics Loop
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                
+                // Map pixel to complex plane (a + bi)
+                let a = minX + (x / width) * (maxX - minX);
+                let b = minY + (y / height) * (maxY - minY);
+                
+                let ca = a;
+                let cb = b;
+                
+                let n = 0;
+                
+                // Optimized escape time check
+                while (n < maxIter) {
+                    let aa = a * a - b * b;
+                    let bb = 2 * a * b;
+                    a = aa + ca;
+                    b = bb + cb;
+                    
+                    // If magnitude > 2, it escapes
+                    if (a * a + b * b > 4) break;
+                    n++;
+                }
+                
+                // 4. Coloring (Pixel manipulation)
+                const pix = (x + y * width) * 4;
+                if (n === maxIter) {
+                    // Inside set: Black
+                    data[pix] = 0; 
+                    data[pix+1] = 0; 
+                    data[pix+2] = 0; 
+                    data[pix+3] = 255;
+                } else {
+                    // Outside set: "Magma" style gradient
+                    const intensity = Math.sqrt(n / maxIter);
+                    data[pix] = 255 * intensity;       // Red
+                    data[pix + 1] = 100 * intensity;   // Green
+                    data[pix + 2] = 255 * (1-intensity); // Blue
+                    data[pix + 3] = 255;
+                }
+            }
+        }
+        
+        // Draw the image data to canvas
+        ctx.putImageData(imgData, 0, 0);
+        
+        // Reset UI
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        status.innerText = "Render Complete.";
+        
+    }, 50); // 50ms delay
+}
+</script>
